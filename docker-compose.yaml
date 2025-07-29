@@ -1,0 +1,32 @@
+services:
+  vgfinder:
+    #Pulls from production image from docker hub if available
+    #If not, build locally
+    image: sullivanclarke/videogamefinder:2.0.0
+    build:
+      context: ./
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  db:
+    image: postgres:latest
+    container_name: database_container 
+    environment:
+      POSTGRES_USER: sullivan
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: videogamedatabase
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "videogamedatabase"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      
+volumes: 
+  pgdata:

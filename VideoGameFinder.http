@@ -1,0 +1,6 @@
+@VideoGameFinder_HostAddress = http://localhost:5165
+
+GET {{VideoGameFinder_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
